@@ -13,11 +13,11 @@
 ## Installation
 ### PM
 ``` powershell
-Install-Package SerializedConfig -Version 0.0.1
+Install-Package SerializedConfig
 ```
 ### .NET CLI
 ``` powershell
-dotnet add package SerializedConfig --version 0.0.1
+dotnet add package SerializedConfig
 ```
 See also in [NuGet Gallery](https://www.nuget.org/packages/SerializedConfig)
 
