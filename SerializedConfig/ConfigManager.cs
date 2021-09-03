@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using SerializedConfig.Exceptions;
+using SerializedConfig.SectionsAtribute;
 using SerializedConfig.Serialization;
 using SerializedConfig.Serialization.Json;
 using SerializedConfig.Serialization.Yaml;
 using SerializedConfig.Types;
+using SerializedConfig.Types.Logical;
+using SerializedConfig.Types.Serialization;
 
 namespace SerializedConfig
 {
@@ -13,39 +19,55 @@ namespace SerializedConfig
         public T configuration {get; set;}
         internal T defaultConfig {get; private set;}
         public string filePath { get; }
-        public SerializationFormat serializationFormat { get; set; }
-        public ConfigManager(string filePath, SerializationFormat serializationFormat, T configuration)
+        private SerializationFormat serializationFormat { get; }
+        
+        public ConfigManager(string filePath, SerializationFormat serializationFormat, [NotNull] T configuration)
         {
-            SetConfiguration(configuration);
+            SetConfiguration(configuration, SetConfigurationMode.Main);
+            SetConfiguration(configuration, SetConfigurationMode.Default);
+            
             if(serializationFormat == SerializationFormat.Yaml && Path.GetExtension(filePath) == ".json" ||
                serializationFormat == SerializationFormat.Json && Path.GetExtension(filePath) == ".yaml" ||
                !Path.GetExtension(filePath).Equals(".yaml") && !Path.GetExtension(filePath).Equals(".json"))
-            {
-                throw new Exception("Extension don't combine with SerializationFormat");
-            }
+                throw new InvalidExtensionException();
+            
             this.filePath = filePath;
             this.serializationFormat = serializationFormat;
         }
         
-        private void SetConfiguration(T configuration)
+        private void SetConfiguration(T configurationClass, SetConfigurationMode setConfigurationMode)
         {
-            foreach (PropertyInfo property in configuration.GetType().GetProperties())
+            if(configurationClass.GetType().GetCustomAttributes(true).Any())
+            {
+                object[] cutomAtributes = configurationClass.GetType().GetCustomAttributes(true);
+                foreach (object atribute in cutomAtributes)
+                    if(atribute is SectionClass)
+                    {
+                        if(setConfigurationMode == SetConfigurationMode.Main)
+                            configuration = configurationClass;
+                        else defaultConfig = configurationClass;   
+                    }
+                return;
+            }
+            
+            foreach (PropertyInfo property in configurationClass.GetType().GetProperties())
             {
                 object[] cutomAtributes = property.GetCustomAttributes(true);
                 if(cutomAtributes.Length == 0) 
-                    property.SetValue(configuration, null);
+                    property.SetValue(configurationClass, null);
+                
                 foreach (object atribute in cutomAtributes) 
                     if(atribute.GetType() != typeof(Section))
-                        property.SetValue(configuration, null);
-            }
+                        property.SetValue(configurationClass, null);
+            } 
             
-            this.configuration = configuration;
+            if(setConfigurationMode == SetConfigurationMode.Main)
+                configuration = configurationClass;
+            else defaultConfig = configurationClass;
         }
-        //TODO - Criar metodo para setar o default
 
         public void Reset()
         {
-            File.Delete(filePath);
             configuration = default;
 
             Save(SerializationMode.SerializeDefault);

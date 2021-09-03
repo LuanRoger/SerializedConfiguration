@@ -1,6 +1,4 @@
-﻿using SerializedConfig.Types;
-
-namespace SerializedConfig.Test.Models.Sections
+﻿namespace SerializedConfig.Test.Models.Sections
 {
     public class Person
     {

@@ -1,12 +1,13 @@
-﻿using SerializedConfig.Test.Models.Sections;
+﻿using SerializedConfig.SectionsAtribute;
+using SerializedConfig.Test.Models.Sections;
 using SerializedConfig.Types;
 
 namespace SerializedConfig.Test.Models.ConfigurationManager
 {
+    [SectionClass]
     public class ConfigurationModel : IConfigurationModel
     {
-        [Section]
-        public Person pessoa { get; set; }
-        public Person outraPessoa {get; set;}
+        public Person person { get; set; }
+        public Person anotherPerson {get; set;}
     }
 }

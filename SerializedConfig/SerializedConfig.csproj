@@ -4,7 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
     <Title>Serialized Configuration</Title>
     <Authors>LuanRoger</Authors>
-    <PackageVersion>0.0.1</PackageVersion>
+    <PackageVersion>0.1.0</PackageVersion>
+    <Description>Create, manage and save settings in Yaml or Json.</Description>
+    <PackageDescription>Create, manage and save settings in Yaml or Json.</PackageDescription>
+    <Sumary>Serialize and manage configurations in .yaml or .json in an easy and modular way.</Sumary>
+    <PackageProjectUrl>https://github.com/LuanRoger/SerializedConfiguration</PackageProjectUrl>
+    <License>MIT</License>
+    <RepositoryUrl>https://github.com/LuanRoger/SerializedConfiguration</RepositoryUrl>
+    <PackageTags>serialization;configuration;yaml;json;csharp;dotnet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
