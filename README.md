@@ -1,10 +1,8 @@
-<h1 align="center">SerializedConfiguration</h1>
-<h3 align="center">Create, manage and save settings in .yaml or .json.</h3>
+# SerializedConfiguration
+### Create, manage and save settings in .yaml or .json.
 
-<p>
-  <img src="https://img.shields.io/nuget/dt/SerializedConfig">
-  <img src="https://img.shields.io/nuget/v/SerializedConfig">
-</p>
+![](https://img.shields.io/nuget/dt/SerializedConfig)
+![](https://img.shields.io/nuget/v/SerializedConfig)
 
 ## Dependencies
 - .NET 5
@@ -22,4 +20,4 @@ dotnet add package SerializedConfig
 See also in [NuGet Gallery](https://www.nuget.org/packages/SerializedConfig)
 
 ## Documentation
-Coming soon
+Access the documentation on [Wiki](https://github.com/LuanRoger/SerializedConfiguration/wiki)
