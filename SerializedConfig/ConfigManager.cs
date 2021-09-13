@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using SerializedConfig.Exceptions;
 using SerializedConfig.SectionsAtribute;
-using SerializedConfig.Serialization;
 using SerializedConfig.Serialization.Json;
 using SerializedConfig.Serialization.Yaml;
 using SerializedConfig.Types;
@@ -14,17 +12,37 @@ using SerializedConfig.Types.Serialization;
 
 namespace SerializedConfig
 {
+    /// <summary>
+    /// Manages settings.
+    /// </summary>
+    /// <typeparam name="T">Model type <c>IConfigurationModel</c></typeparam>
     public class ConfigManager<T> where T : IConfigurationModel
     {
+        /// <summary>
+        /// Current settings.
+        /// </summary>
         public T configuration {get; set;}
         internal T defaultConfig {get; private set;}
+        
+        /// <summary>
+        /// Path to settings file.
+        /// </summary>
         public string filePath { get; }
+        
         private SerializationFormat serializationFormat { get; }
         
-        public ConfigManager(string filePath, SerializationFormat serializationFormat, [NotNull] T configuration)
+        /// <summary>
+        /// Instance new ConfigManager
+        /// </summary>
+        /// <param name="filePath">Path to settings file.</param>
+        /// <param name="serializationFormat">Settings file serialization format.</param>
+        /// <param name="configurationModel">IConfigurationModel base configuration class.</param>
+        /// <exception cref="InvalidExtensionException">Occurs when the configuration file extension does not match
+        /// the serialization format.</exception>
+        public ConfigManager(string filePath, SerializationFormat serializationFormat, [NotNull] T configurationModel)
         {
-            SetConfiguration(configuration, SetConfigurationMode.Main);
-            SetConfiguration(configuration, SetConfigurationMode.Default);
+            SetConfiguration(configurationModel, SetConfigurationMode.Main);
+            SetConfiguration(configurationModel, SetConfigurationMode.Default);
             
             if(serializationFormat == SerializationFormat.Yaml && Path.GetExtension(filePath) == ".json" ||
                serializationFormat == SerializationFormat.Json && Path.GetExtension(filePath) == ".yaml" ||
@@ -65,7 +83,10 @@ namespace SerializedConfig
                 configuration = configurationClass;
             else defaultConfig = configurationClass;
         }
-
+        
+        /// <summary>
+        /// Resets the current configuration file to the model.
+        /// </summary>
         public void Reset()
         {
             configuration = default;
@@ -74,15 +95,18 @@ namespace SerializedConfig
             Load();
         }
         
+        /// <summary>
+        /// Load the configuration file and store it in <c>configuration</c>.
+        /// </summary>
         public void Load()
         {
             configuration = serializationFormat switch
             {
                 SerializationFormat.Yaml => this.DeserializeYaml(),
-                SerializationFormat.Json => this.DeserializeJson(),
-                _ => throw new Exception("No format seted")
+                SerializationFormat.Json => this.DeserializeJson()
             };
         }
+        
         private void Save(SerializationMode serializationMode)
         {
             switch (serializationFormat)
@@ -93,9 +117,12 @@ namespace SerializedConfig
                 case SerializationFormat.Json:
                     this.SerializeJson(serializationMode);
                     break;
-                default: throw new Exception("No format seted");
             }
         }
+        
+        /// <summary>
+        /// Save current settings to configuration file.
+        /// </summary>
         public void Save()
         {
             switch (serializationFormat)
@@ -106,7 +133,6 @@ namespace SerializedConfig
                 case SerializationFormat.Json:
                     this.SerializeJson();
                     break;
-                default: throw new Exception("No format seted");
             }
         }
     }

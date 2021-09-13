@@ -15,7 +15,7 @@ namespace SerializedConfig.Test
             
             SerializationYaml.Deserialize();
             
-            Assert.True(Consts.configManager.configuration.person.name == "Bob");
+            Assert.Equal("Bob", Consts.configManager.configuration.person.name);
         }
         
         [Fact]

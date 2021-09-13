@@ -11,7 +11,7 @@ namespace SerializedConfig.Test.Serialization
 
             lock (Consts.locker)
             {
-                Consts.configManager.Save();   
+                Consts.configManager.Save();
             }
         }
         

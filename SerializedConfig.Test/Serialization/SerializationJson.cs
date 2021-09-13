@@ -11,7 +11,7 @@ namespace SerializedConfig.Test.Serialization
 
             lock (Consts.locker)
             {
-                Consts.configManager.Save();   
+                Consts.configManager.Save();
             }
         }
         
@@ -22,6 +22,14 @@ namespace SerializedConfig.Test.Serialization
             lock (Consts.locker)
             {
                 Consts.configManager.Load();   
+            }
+        }
+        
+        public static void ResetJsonConfiguration()
+        {
+            lock (Consts.locker)
+            {
+                Consts.configManager.Reset();
             }
         }
     }

@@ -1,4 +1,4 @@
 ﻿namespace SerializedConfig.Types.Logical
 {
-    public enum SetConfigurationMode { Main, Default }
+    internal enum SetConfigurationMode { Main, Default }
 }

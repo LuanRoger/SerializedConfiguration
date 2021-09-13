@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using SerializedConfig.Types;
-using YamlDotNet.Serialization;
 using System.Text.Json;
-using System;
+using SerializedConfig.Types.Serialization;
 
 namespace SerializedConfig.Serialization.Json
 {

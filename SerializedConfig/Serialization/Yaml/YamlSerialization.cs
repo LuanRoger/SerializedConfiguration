@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using SerializedConfig.Types;
+using SerializedConfig.Types.Serialization;
 using YamlDotNet.Serialization;
 
 namespace SerializedConfig.Serialization.Yaml

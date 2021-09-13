@@ -2,9 +2,9 @@
 
 namespace SerializedConfig.SectionsAtribute
 {
+    /// <summary>
+    /// Sets all IConfigurationModel properties as sections.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class SectionClass : Attribute
-    {
-        
-    }
+    public sealed class SectionClass : Attribute { }
 }
