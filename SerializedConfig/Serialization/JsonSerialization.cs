@@ -1,24 +1,23 @@
 ﻿using System.IO;
+using Newtonsoft.Json;
 using SerializedConfig.Types;
-using System.Text.Json;
 using SerializedConfig.Types.Serialization;
 
-namespace SerializedConfig.Serialization.Json
+namespace SerializedConfig.Serialization
 {
     internal static class JsonSerialization
     {
+        private static readonly JsonSerializerSettings serializerSettings = new()
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
         internal static void SerializeJson<T>(this ConfigManager<T> configManager, 
             SerializationMode serializationMode = SerializationMode.SerializeConfig) where T : IConfigurationModel
         {
-            JsonSerializerOptions serializerOptions = new()
-            {
-              IgnoreNullValues = true
-            };
-            
             string jsonText = 
-                serializationMode == SerializationMode.SerializeConfig ? 
-                JsonSerializer.Serialize(configManager.configuration, serializerOptions) :
-                JsonSerializer.Serialize(configManager.defaultConfig, serializerOptions);
+                serializationMode == SerializationMode.SerializeConfig ?
+                JsonConvert.SerializeObject(configManager.configuration, Formatting.Indented, serializerSettings) :
+                JsonConvert.SerializeObject(configManager.defaultConfig, Formatting.Indented, serializerSettings);
             
             File.WriteAllText(configManager.filePath, jsonText);
         }
@@ -26,8 +25,8 @@ namespace SerializedConfig.Serialization.Json
         internal static T DeserializeJson<T>(this ConfigManager<T> configManager) where T : IConfigurationModel
         {
             string jsonText = File.ReadAllText(configManager.filePath);
-            
-            return JsonSerializer.Deserialize<T>(jsonText);
+            var ronaldo = JsonConvert.DeserializeObject<T>(jsonText, serializerSettings);
+            return ronaldo;
         }
     }
 }

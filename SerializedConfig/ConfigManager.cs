@@ -4,8 +4,7 @@ using System.Linq;
 using System.Reflection;
 using SerializedConfig.Exceptions;
 using SerializedConfig.SectionsAtribute;
-using SerializedConfig.Serialization.Json;
-using SerializedConfig.Serialization.Yaml;
+using SerializedConfig.Serialization;
 using SerializedConfig.Types;
 using SerializedConfig.Types.Logical;
 using SerializedConfig.Types.Serialization;
@@ -55,27 +54,26 @@ namespace SerializedConfig
         
         private void SetConfiguration(T configurationClass, SetConfigurationMode setConfigurationMode)
         {
-            if(configurationClass.GetType().GetCustomAttributes(true).Any())
+            //Get atributes from class
+            foreach (object classAtribute in configurationClass.GetType().GetCustomAttributes(true))
             {
-                object[] cutomAtributes = configurationClass.GetType().GetCustomAttributes(true);
-                foreach (object atribute in cutomAtributes)
-                    if(atribute is SectionClass)
-                    {
-                        if(setConfigurationMode == SetConfigurationMode.Main)
-                            configuration = configurationClass;
-                        else defaultConfig = configurationClass;   
-                    }
-                return;
+                if (classAtribute is not SectionClass) continue;
+                
+                if(setConfigurationMode == SetConfigurationMode.Main)
+                    configuration = configurationClass;
+                else defaultConfig = configurationClass;
             }
-            
+
+            //Get atributes from class properties
             foreach (PropertyInfo property in configurationClass.GetType().GetProperties())
             {
                 object[] cutomAtributes = property.GetCustomAttributes(true);
-                if(cutomAtributes.Length == 0) 
+                
+                if(cutomAtributes.Length == 0)
                     property.SetValue(configurationClass, null);
                 
                 foreach (object atribute in cutomAtributes) 
-                    if(atribute.GetType() != typeof(Section))
+                    if(atribute is not Section)
                         property.SetValue(configurationClass, null);
             } 
             
