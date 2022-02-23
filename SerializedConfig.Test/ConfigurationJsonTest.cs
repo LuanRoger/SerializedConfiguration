@@ -22,12 +22,7 @@ namespace SerializedConfig.Test
         {
             _configManager = new(Consts.SAVE_FILE_PATH_JSON, SerializationFormat.Json, configurationModelClassAtribute);
         }
-        
-        private void ResetConfigManager()
-        {
-            _configManager.configuration = null;
-        }
-        
+
         [Fact]
         public void SaveConfigurationJson()
         {
@@ -39,7 +34,11 @@ namespace SerializedConfig.Test
         [Fact]
         public void LoadConfigurationJson()
         {
-            ResetConfigManager();
+            _configManager.Save();
+            _configManager.configuration = null;
+            
+            Assert.True(File.Exists(Consts.SAVE_FILE_PATH_JSON));
+            Assert.Null(_configManager.configuration);
             
             _configManager.Load();
             

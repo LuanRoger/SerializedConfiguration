@@ -22,12 +22,7 @@ namespace SerializedConfig.Test
         {
             _configManager = new(Consts.SAVE_FILE_PATH_YAML, SerializationFormat.Yaml, _configurationModelClassAtribute);
         }
-        
-        private void ResetConfigManager()
-        {
-            _configManager.configuration = null;
-        }
-        
+
         [Fact]
         public void SaveConfigurationYaml()
         {
@@ -39,8 +34,12 @@ namespace SerializedConfig.Test
         [Fact]
         public void LoadConfigurationYaml()
         {
-            ResetConfigManager();
+            _configManager.Save();
+            _configManager.configuration = null;
             
+            Assert.True(File.Exists(Consts.SAVE_FILE_PATH_YAML));
+            Assert.Null(_configManager.configuration);
+
             _configManager.Load();
             
             Assert.NotNull(_configManager.configuration);
