@@ -6,18 +6,47 @@
 
 ## Dependencies
 - .NET 5
-- YamlDotNet (>= 11.2.1)
+- [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json) (>= 13.0.1)
+- [YamlDotNet](https://www.nuget.org/packages/YamlDotNet) (>= 11.2.1)
 
 ## Installation
 ### PM
-``` powershell
+```powershell
 Install-Package SerializedConfig
 ```
 ### .NET CLI
-``` powershell
+```powershell
 dotnet add package SerializedConfig
 ```
 See also in [NuGet Gallery](https://www.nuget.org/packages/SerializedConfig)
+
+## Simple example:
+```csharp
+[SectionClass]
+public class ConfigurationModel : IConfigurationModel
+{
+    public Person person { get; set; }
+    public Person anotherPerson { get; set; }
+}
+```
+```csharp
+ConfigurationModel configurationModel = new()
+{
+    person = new()
+    {
+        name = "Bob",
+        age = 68
+    },
+    anotherPerson = new()
+    {
+        name = "Anders",
+        age = 60
+    }
+};
+            
+ConfigManager<ConfigurationModel> configManager = new(Consts.SAVE_FILE_PATH_YAML, SerializationFormat.Yaml, configurationModel);
+configManager.Save();
+```
 
 ## Documentation
 Access the documentation on [Wiki](https://github.com/LuanRoger/SerializedConfiguration/wiki)
