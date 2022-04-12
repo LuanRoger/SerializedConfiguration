@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using SerializedConfig.Test.Models;
+using SerializedConfig.Test.Models.ConfigModelClassAttrib;
 using SerializedConfig.Types.Serialization;
 using Xunit;
 
@@ -7,7 +7,7 @@ namespace SerializedConfig.Test
 {
     public class ConfigurationJsonTest
     {
-        private ConfigurationModelClassAtribute configurationModelClassAtribute { get; } = new()
+        private ConfigurationModelClassAttribute configurationModelClassAttribute { get; } = new()
         {
             configurationString = "configurationString", 
             configurationBool = false,
@@ -16,11 +16,11 @@ namespace SerializedConfig.Test
             configurationChar = 'R',
             configurationArray = new[] { "Bob", "Andrew" }
         };
-        private ConfigManager<ConfigurationModelClassAtribute> _configManager { get; }
+        private ConfigManager<ConfigurationModelClassAttribute> _configManager { get; }
 
         public ConfigurationJsonTest()
         {
-            _configManager = new(Consts.SAVE_FILE_PATH_JSON, SerializationFormat.Json, configurationModelClassAtribute);
+            _configManager = new(Consts.SAVE_FILE_PATH_JSON, SerializationFormat.Json, configurationModelClassAttribute);
         }
 
         [Fact]

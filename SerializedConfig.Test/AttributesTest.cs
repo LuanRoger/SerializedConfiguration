@@ -1,17 +1,17 @@
 ﻿using System;
 using System.IO;
-using SerializedConfig.Test.Models;
+using SerializedConfig.Test.Models.ConfigModelClassAttrib;
 using SerializedConfig.Types.Serialization;
 using Xunit;
 
 namespace SerializedConfig.Test
 {
-    public class AtributesTest
+    public class AttributesTest
     {
         private readonly string JSON_FILE_PATH = 
             $"{AppDomain.CurrentDomain.BaseDirectory}appsettings_json_atributes_test.json";
 
-        private ConfigurationModelClassAtribute _configurationModelClassAtribute = new()
+        private ConfigurationModelClassAttribute _configurationModelClassAttribute = new()
         {
             configurationString = "configurationString",
             configurationBool = false,
@@ -20,7 +20,7 @@ namespace SerializedConfig.Test
             configurationChar = 'R',
             configurationArray = new[] { "Bob", "Andrew" }
         };
-        private ConfigurationModelPropertieAtribute _configurationModelPropertieAtribute = new() 
+        private ConfigurationModelPropertieAttribute _configurationModelPropertieAttribute = new() 
         {
             configurationString = "configurationString", 
             configurationBool = false,
@@ -29,7 +29,7 @@ namespace SerializedConfig.Test
             configurationChar = 'R',
             configurationArray = new[] { "Bob", "Andrew" }
         };
-        private ConfigurationModelPropertieAtributesIncomplete _configurationModelPropertieAtribWithNull = new()
+        private ConfigurationModelPropertieAttributesIncomplete _configurationModelPropertieAtribWithNull = new()
         {
             configurationString = "configurationString", 
             configurationBool = false,
@@ -40,20 +40,20 @@ namespace SerializedConfig.Test
         };
 
         [Fact]
-        public void SerializeModelWithClassAtribTest()
+        public void SerializeModelWithClassAttribTest()
         {
-            ConfigManager<ConfigurationModelClassAtribute> _configManager = 
-                new(JSON_FILE_PATH, SerializationFormat.Json, _configurationModelClassAtribute);
+            ConfigManager<ConfigurationModelClassAttribute> _configManager = 
+                new(JSON_FILE_PATH, SerializationFormat.Json, _configurationModelClassAttribute);
             _configManager.Save();
             
             Assert.True(File.Exists(JSON_FILE_PATH));
             File.Delete(JSON_FILE_PATH);
         }
         [Fact]
-        public void SerializationModelWithPropertieAtribTest()
+        public void SerializationModelWithPropertieAttribTest()
         {
-            ConfigManager<ConfigurationModelPropertieAtributesIncomplete> _configManager =
-                new(JSON_FILE_PATH, SerializationFormat.Json, _configurationModelPropertieAtribWithNull);
+            ConfigManager<ConfigurationModelPropertieAttribute> _configManager =
+                new(JSON_FILE_PATH, SerializationFormat.Json, _configurationModelPropertieAttribute);
             _configManager.Save();
             
             Assert.True(File.Exists(JSON_FILE_PATH));
@@ -63,7 +63,7 @@ namespace SerializedConfig.Test
         [Fact]
         public void SerializeModelWithNullPropertieTest()
         {
-            ConfigManager<ConfigurationModelPropertieAtributesIncomplete> _configManager = 
+            ConfigManager<ConfigurationModelPropertieAttributesIncomplete> _configManager = 
                 new(JSON_FILE_PATH, SerializationFormat.Json, _configurationModelPropertieAtribWithNull);
             _configManager.Save();
             

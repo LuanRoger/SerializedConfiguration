@@ -1,5 +1,4 @@
 ﻿using System;
-using SerializedConfig.Test.Models;
 
 namespace SerializedConfig.Test
 {

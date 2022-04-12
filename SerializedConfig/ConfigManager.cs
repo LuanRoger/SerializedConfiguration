@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SerializedConfig.Exceptions;
-using SerializedConfig.SectionsAtribute;
+using SerializedConfig.SectionsAttribute;
 using SerializedConfig.Serialization;
 using SerializedConfig.Types.Logical;
 using SerializedConfig.Types.Model;

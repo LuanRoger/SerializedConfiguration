@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using SerializedConfig.Test.Models;
+using SerializedConfig.Test.Models.ConfigModelClassAttrib;
 using SerializedConfig.Types.Serialization;
 using Xunit;
 
@@ -7,7 +7,7 @@ namespace SerializedConfig.Test
 {
     public class ConfigurationYamlTest
     {
-        private ConfigurationModelClassAtribute _configurationModelClassAtribute = new()
+        private ConfigurationModelClassAttribute _configurationModelClassAttribute = new()
         {
             configurationString = "configurationString", 
             configurationBool = false,
@@ -16,11 +16,11 @@ namespace SerializedConfig.Test
             configurationChar = 'R',
             configurationArray = new[] { "Bob", "Andrew" }
         };
-        private ConfigManager<ConfigurationModelClassAtribute> _configManager { get; set; }
+        private ConfigManager<ConfigurationModelClassAttribute> _configManager { get; set; }
 
         public ConfigurationYamlTest()
         {
-            _configManager = new(Consts.SAVE_FILE_PATH_YAML, SerializationFormat.Yaml, _configurationModelClassAtribute);
+            _configManager = new(Consts.SAVE_FILE_PATH_YAML, SerializationFormat.Yaml, _configurationModelClassAttribute);
         }
 
         [Fact]

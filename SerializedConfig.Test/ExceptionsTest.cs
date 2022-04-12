@@ -1,24 +1,22 @@
 ﻿using SerializedConfig.Exceptions;
-using SerializedConfig.Test.Models;
+using SerializedConfig.Test.Models.ConfigModelClassAttrib;
 using SerializedConfig.Types.Serialization;
 using Xunit;
-using Xunit.Sdk;
 
 namespace SerializedConfig.Test
 {
-    public class FileExtensionTest
+    public class ExceptionsTest
     {
-        private ConfigurationModelClassAtribute configurationModelClassAtribute { get; } = 
-            new();
-        private ConfigManager<ConfigurationModelClassAtribute> _configManager { get; set; }
+        private ConfigurationModelClassAttribute configurationModelClassAttribute { get; } = new();
+        private ConfigManager<ConfigurationModelClassAttribute> _configManager { get; set; }
         
         private void YamlSerializationJsonFileConstructor()
         {
-            _configManager = new(Consts.SAVE_FILE_PATH_JSON, SerializationFormat.Yaml, configurationModelClassAtribute);
+            _configManager = new(Consts.SAVE_FILE_PATH_JSON, SerializationFormat.Yaml, configurationModelClassAttribute);
         }
         private void JsonSerializationYamlFileConstructor()
         {
-            _configManager = new(Consts.SAVE_FILE_PATH_YAML, SerializationFormat.Json, configurationModelClassAtribute);
+            _configManager = new(Consts.SAVE_FILE_PATH_YAML, SerializationFormat.Json, configurationModelClassAttribute);
         }
         
         [Fact]

@@ -1,10 +1,11 @@
-﻿using SerializedConfig.SectionsAtribute;
-using SerializedConfig.Types;
+﻿using SerializedConfig.SectionsAttribute;
+using SerializedConfig.Types.Model;
+using YamlDotNet.Serialization;
 
-namespace SerializedConfig.Test.Models
+namespace SerializedConfig.Test.Models.ConfigModelClassAttrib
 {
-    [SectionClass]
-    public class ConfigurationModelClassAtribute : IConfigurationModel, IConfiguration
+    [ConfigSection]
+    public class ConfigurationModelClassAttribute : IConfigurationModel, IConfiguration
     {
         public string configurationString { get; set; }
         public bool configurationBool { get; set; }

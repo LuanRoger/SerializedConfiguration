@@ -2,7 +2,7 @@
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using SerializedConfig.SectionsAtribute;
+using SerializedConfig.SectionsAttribute;
 using SerializedConfig.Types.Model;
 
 namespace SerializedConfig.Types.JsonContracts

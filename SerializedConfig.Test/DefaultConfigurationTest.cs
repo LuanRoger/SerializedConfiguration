@@ -1,5 +1,5 @@
 ﻿using System;
-using SerializedConfig.Test.Models;
+using SerializedConfig.Test.Models.ConfigModelClassAttrib;
 using SerializedConfig.Types.Serialization;
 using Xunit;
 
@@ -7,7 +7,7 @@ namespace SerializedConfig.Test
 {
     public class DefaultConfigurationTest
     {
-        private ConfigurationModelClassAtribute configurationModelClassAtribute { get; } = new()
+        private ConfigurationModelClassAttribute configurationModelClassAttribute { get; } = new()
         {
             configurationString = "configurationString", 
             configurationBool = false,
@@ -16,12 +16,12 @@ namespace SerializedConfig.Test
             configurationChar = 'R',
             configurationArray = new[] { "Bob", "Andrew" }
         };
-        private ConfigManager<ConfigurationModelClassAtribute> _configManager { get; }
+        private ConfigManager<ConfigurationModelClassAttribute> _configManager { get; }
         private readonly string JSON_FILE_TO_DEFAULT = $"{AppDomain.CurrentDomain.BaseDirectory}appsettings_default.json";
         
         public DefaultConfigurationTest()
         {
-            _configManager = new(JSON_FILE_TO_DEFAULT, SerializationFormat.Json, configurationModelClassAtribute);
+            _configManager = new(JSON_FILE_TO_DEFAULT, SerializationFormat.Json, configurationModelClassAttribute);
             _configManager.Save();
         }
 
@@ -42,11 +42,11 @@ namespace SerializedConfig.Test
             
             _configManager.Reset();
             
-            Assert.Equal(configurationModelClassAtribute.configurationString,
+            Assert.Equal(configurationModelClassAttribute.configurationString,
                 _configManager.configuration.configurationString);
-            Assert.Equal(configurationModelClassAtribute.configurationFloat,
+            Assert.Equal(configurationModelClassAttribute.configurationFloat,
                 _configManager.configuration.configurationFloat);
-            Assert.Equal(configurationModelClassAtribute.configurationChar,
+            Assert.Equal(configurationModelClassAttribute.configurationChar,
                 _configManager.configuration.configurationChar);
         }
     }

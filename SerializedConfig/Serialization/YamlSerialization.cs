@@ -10,7 +10,9 @@ namespace SerializedConfig.Serialization
         private static readonly ISerializer yamlSerializer = new SerializerBuilder()
             .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
             .Build();
-        private static readonly IDeserializer yamlDeserializer = new DeserializerBuilder().Build();
+        private static readonly IDeserializer yamlDeserializer = new DeserializerBuilder()
+            .Build();
+        
         internal static void SerializeYaml<T>(this ConfigManager<T> configManager, 
             SerializationMode serializationMode = SerializationMode.SerializeConfig) where T : IConfigurationModel
         {

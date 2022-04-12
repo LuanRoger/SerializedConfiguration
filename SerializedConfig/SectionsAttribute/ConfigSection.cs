@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SerializedConfig.SectionsAtribute
+namespace SerializedConfig.SectionsAttribute
 {
     /// <summary>
     /// Sets all IConfigurationModel properties as sections.
