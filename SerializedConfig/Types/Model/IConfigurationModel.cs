@@ -1,4 +1,4 @@
-﻿namespace SerializedConfig.Types
+﻿namespace SerializedConfig.Types.Model
 {
     /// <summary>
     /// Sign a class as a configuration template.

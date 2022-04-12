@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using SerializedConfig.Types;
+using SerializedConfig.Types.Model;
 using SerializedConfig.Types.Serialization;
 using YamlDotNet.Serialization;
 

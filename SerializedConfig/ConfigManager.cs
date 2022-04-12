@@ -1,13 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using SerializedConfig.Exceptions;
 using SerializedConfig.SectionsAtribute;
 using SerializedConfig.Serialization;
-using SerializedConfig.Types;
 using SerializedConfig.Types.Logical;
+using SerializedConfig.Types.Model;
 using SerializedConfig.Types.Serialization;
+using SerializedConfig.Utils;
 
 namespace SerializedConfig
 {
@@ -20,8 +20,8 @@ namespace SerializedConfig
         /// <summary>
         /// Current settings.
         /// </summary>
-        public T configuration {get; set;}
-        internal T defaultConfig {get; private set;}
+        public T configuration { get; set; }
+        internal T defaultConfig { get; private set; }
         
         /// <summary>
         /// Path to settings file.
@@ -40,24 +40,24 @@ namespace SerializedConfig
         /// the serialization format.</exception>
         public ConfigManager(string filePath, SerializationFormat serializationFormat, [NotNull] T configurationModel)
         {
-            SetConfiguration(configurationModel, SetConfigurationMode.Main);
-            SetConfiguration(configurationModel, SetConfigurationMode.Default);
-            
-            if(serializationFormat == SerializationFormat.Yaml && Path.GetExtension(filePath) == ".json" ||
-               serializationFormat == SerializationFormat.Json && Path.GetExtension(filePath) == ".yaml" ||
-               !Path.GetExtension(filePath).Equals(".yaml") && !Path.GetExtension(filePath).Equals(".json"))
+            if(serializationFormat == SerializationFormat.Yaml && Check.CheckFileExtension(filePath, ".json") ||
+               serializationFormat == SerializationFormat.Json && Check.CheckFileExtension(filePath, ".yaml") ||
+               !Check.CheckFileExtension(filePath, ".yaml") && !Check.CheckFileExtension(filePath, ".json") )
                 throw new InvalidExtensionException();
             
             this.filePath = filePath;
             this.serializationFormat = serializationFormat;
+            
+            SetConfiguration(configurationModel, SetConfigurationMode.Main);
+            SetConfiguration(configurationModel, SetConfigurationMode.Default);
         }
         
         private void SetConfiguration(T configurationClass, SetConfigurationMode setConfigurationMode)
         {
             //Get atributes from class
-            foreach (object classAtribute in configurationClass.GetType().GetCustomAttributes(true))
+            foreach (Attribute classAtribute in configurationClass.GetType().GetCustomAttributes(true))
             {
-                if (classAtribute is not SectionClass) continue;
+                if (classAtribute is not ConfigSection) continue;
                 
                 if(setConfigurationMode == SetConfigurationMode.Main)
                     configuration = configurationClass;
@@ -73,15 +73,15 @@ namespace SerializedConfig
                     property.SetValue(configurationClass, null);
                 
                 foreach (object atribute in cutomAtributes) 
-                    if(atribute is not Section)
+                    if(atribute is not ConfigProperty)
                         property.SetValue(configurationClass, null);
-            } 
+            }
             
             if(setConfigurationMode == SetConfigurationMode.Main)
                 configuration = configurationClass;
             else defaultConfig = configurationClass;
         }
-        
+
         /// <summary>
         /// Resets the current configuration file to the model.
         /// </summary>

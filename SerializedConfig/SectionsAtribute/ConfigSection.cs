@@ -6,5 +6,5 @@ namespace SerializedConfig.SectionsAtribute
     /// Sets all IConfigurationModel properties as sections.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class SectionClass : Attribute { }
+    public sealed class ConfigSection : Attribute { }
 }
