@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using SerializedConfig.Test.Models.ConfigModelClassAttrib;
 using SerializedConfig.Types.Serialization;
 using Xunit;
 
 namespace SerializedConfig.Test
 {
-    public class ConfigurationJsonTest
+    public class ConfigurationYamlAsyncTest
     {
         private ConfigurationModelClassAttribute configurationModelClassAttribute { get; } = new()
         {
@@ -17,32 +18,33 @@ namespace SerializedConfig.Test
             configurationArray = new[] { "Bob", "Andrew" }
         };
         private ConfigManager<ConfigurationModelClassAttribute> _configManager { get; }
+        
+        private readonly string SAVE_FILE_PATH_YAML_ASYNC_TASK = AppDomain.CurrentDomain.BaseDirectory + "appsettings_async.yaml";
 
-        public ConfigurationJsonTest()
+        public ConfigurationYamlAsyncTest()
         {
-            _configManager = new(Consts.SAVE_FILE_PATH_JSON, SerializationFormat.Json, configurationModelClassAttribute);
-        }
-
-        [Fact]
-        public void SaveConfigurationJsonTest()
-        {
-            _configManager.Save();
-            
-            Assert.True(File.Exists(Consts.SAVE_FILE_PATH_JSON));
+            _configManager = new(SAVE_FILE_PATH_YAML_ASYNC_TASK, SerializationFormat.Yaml, configurationModelClassAttribute);
         }
         
         [Fact]
-        public void LoadConfigurationJsonTest()
+        public async void SaveConfigurationYamlTest()
+        {
+            await _configManager.SaveAsync();
+            
+            Assert.True(File.Exists(SAVE_FILE_PATH_YAML_ASYNC_TASK));
+            
+            File.Delete(SAVE_FILE_PATH_YAML_ASYNC_TASK);
+        }
+        
+        [Fact]
+        public async void LoadConfigurationYam()
         {
             _configManager.Save();
             _configManager.configuration = null;
-            
-            Assert.True(File.Exists(Consts.SAVE_FILE_PATH_JSON));
-            Assert.Null(_configManager.configuration);
-            
-            _configManager.Load();
+            await _configManager.LoadAsync();
             
             Assert.NotNull(_configManager.configuration);
+            File.Delete(SAVE_FILE_PATH_YAML_ASYNC_TASK);
         }
     }
 }
