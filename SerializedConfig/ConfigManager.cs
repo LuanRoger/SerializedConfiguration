@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Threading.Tasks;
 using SerializedConfig.Exceptions;
 using SerializedConfig.SectionsAttribute;
 using SerializedConfig.Serialization;
@@ -89,33 +90,8 @@ namespace SerializedConfig
         {
             configuration = default;
 
-            Save(SerializationMode.SerializeDefault);
+            SaveByMode(SerializationMode.SerializeDefault);
             Load();
-        }
-        
-        /// <summary>
-        /// Load the configuration file and store it in <c>configuration</c>.
-        /// </summary>
-        public void Load()
-        {
-            configuration = serializationFormat switch
-            {
-                SerializationFormat.Yaml => this.DeserializeYaml(),
-                SerializationFormat.Json => this.DeserializeJson()
-            };
-        }
-        
-        private void Save(SerializationMode serializationMode)
-        {
-            switch (serializationFormat)
-            {
-                case SerializationFormat.Yaml:
-                    this.SerializeYaml(serializationMode);
-                    break;
-                case SerializationFormat.Json:
-                    this.SerializeJson(serializationMode);
-                    break;
-            }
         }
         
         /// <summary>
@@ -130,6 +106,54 @@ namespace SerializedConfig
                     break;
                 case SerializationFormat.Json:
                     this.SerializeJson();
+                    break;
+            }
+        }
+        public async Task SaveAsync()
+        {
+            switch (serializationFormat)
+            {
+                case SerializationFormat.Yaml:
+                    await this.SerializeYamlAsync();
+                    break;
+                case SerializationFormat.Json:
+                    await this.SerializeJsonAsync();
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Load the configuration file and store it in <c>configuration</c> asynchronously.
+        /// </summary>
+        public async Task LoadAsync()
+        {
+            configuration = serializationFormat switch
+            {
+                SerializationFormat.Yaml => await this.DeserializeYamlAsync(),
+                SerializationFormat.Json => await this.DeserializeJsonAsync()
+            };
+        }
+        /// <summary>
+        /// Load the configuration file and store it in <c>configuration</c>.
+        /// </summary>
+        public void Load()
+        {
+            configuration = serializationFormat switch
+            {
+                SerializationFormat.Yaml => this.DeserializeYaml(),
+                SerializationFormat.Json => this.DeserializeJson()
+            };
+        }
+        
+        private void SaveByMode(SerializationMode serializationMode)
+        {
+            switch (serializationFormat)
+            {
+                case SerializationFormat.Yaml:
+                    this.SerializeYaml(serializationMode);
+                    break;
+                case SerializationFormat.Json:
+                    this.SerializeJson(serializationMode);
                     break;
             }
         }
