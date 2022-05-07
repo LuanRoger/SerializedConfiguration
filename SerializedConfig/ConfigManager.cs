@@ -109,6 +109,9 @@ namespace SerializedConfig
                     break;
             }
         }
+        /// <summary>
+        /// Save current settings to configuration file asynchronously.
+        /// </summary>
         public async Task SaveAsync()
         {
             switch (serializationFormat)
