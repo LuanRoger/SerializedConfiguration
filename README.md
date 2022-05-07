@@ -22,7 +22,7 @@ See also in [NuGet Gallery](https://www.nuget.org/packages/SerializedConfig)
 
 ## Simple example:
 ```csharp
-[SectionClass]
+[ConfigSection]
 public class ConfigurationModel : IConfigurationModel
 {
     public Person person { get; set; }
